@@ -10,7 +10,7 @@ class Welcome extends CI_Controller {
 	public function ajax_upload() {
 
 		if(isset($_FILES['userfile']['name'])) {
-			$config['upload_path'] = './upload/';
+			$config['upload_path'] = './assets/upload/';
 			$config['allowed_types'] = 'jpg|jpeg|png|gif';
 			$this->load->library('upload', $config);
 
@@ -19,7 +19,7 @@ class Welcome extends CI_Controller {
 			} else {
 				$data = array('upload_data' => $this->upload->data());
 				$post_image = $_FILES['userfile']['name'];
-				echo '<img src="'.base_url().'upload/'.$post_image.'" />';
+				echo '<img src="'.base_url().'assets/upload/'.$post_image.'" />';
 			}
 		}
 	}

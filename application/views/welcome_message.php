@@ -15,12 +15,15 @@
 
     <body>
     	<div class="container">
-    		<form method="post" id="upload_form" enctype="multipart/form">
-    			<input type="file" name="userfile" id="image_file">
-
-    			<br><br>
-    			<input type="submit" name="upload" id="upload" value="Upload" class="btn btn-primary">
-    		</form>
+    		<?php 
+	    		$attributes = array(
+	    			'role' => 'form',
+	    			'class' => 'dropzone',
+	    			'id' => 'upload_form'
+	    		);
+	            echo form_open('welcome/ajax_upload', $attributes); 
+	            echo form_close();
+            ?>
 
     		<br><br>
     		<div id="uploaded_image">
@@ -31,6 +34,7 @@
 	    <!-- Optional JavaScript -->
 	    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	    <script src="<?php echo base_url('assets/js/dropzone.js'); ?>"></script>
 	    <script>
 	        $(document).ready(function(){
 
