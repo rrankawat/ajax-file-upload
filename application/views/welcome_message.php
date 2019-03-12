@@ -15,20 +15,21 @@
 
     <body>
     	<div class="container">
-    		<?php 
-	    		$attributes = array(
-	    			'role' => 'form',
-	    			'class' => 'dropzone',
-	    			'id' => 'upload_form'
-	    		);
-	            echo form_open('welcome/ajax_upload', $attributes); 
-	            echo form_close();
-            ?>
+    		<br>
+    		<h2 align="center">Upload Multiple files using codeigniter</h2>
+
+    		<br>
+    		<div class="col-md-6" align="right">
+    			<label>Select Multiple files</label>
+    		</div>
+
+    		<div class="col-md-6">
+    			<input type="file" name="files" id="files" multiple />
+    		</div>
+    		<div style="clear: both"></div>
 
     		<br><br>
-    		<div id="uploaded_image">
-
-    		</div>
+    		<div id="uploaded_images" class="row"></div>
 		</div>
 
 	    <!-- Optional JavaScript -->
@@ -38,29 +39,47 @@
 	    <script>
 	        $(document).ready(function(){
 
-	            $("#upload_form").on('submit', function(e){
-	            	e.preventDefault();
-	            	if($('#image_file').val() == "") {
-	            		alert("Please select an image!");
-	            	} else {
+	            $("#files").change(function(){
+	            	var files = $("#files")[0].files;
+	            	var error = '';
+	            	var form_data = new FormData();
 
+	            	for(var count=0; count<files.length; count++){
+	            		var name = files[count].name;
+	            		var extension = name.split('.').pop().toLowerCase();
+	            		if(jQuery.inArray(extension, ['gif', 'png', 'jpg', 'jpeg']) == -1){
+	            			error += "Invalid " + count + " Image File";
+	            		} else {
+	            			form_data.append("files[]", files[count]);
+	            		}
+	            	}
+
+	            	if(error == '') {
 	            		$.ajax({
 	            			url: "<?php echo site_url('welcome/ajax_upload'); ?>",
 	            			method: "POST",
-	            			data: new FormData(this),
+	            			data: form_data,
 	            			contentType: false,
 	            			cache: false,
 	            			processData: false,
+	            			beforeSend: function() {
+	            				$('#uploaded_images').html('<label class="text-success">Uploading...</label>');
+	            			},
 	            			success: function(data) {
 	            				console.log('hi');
-	            				$('#uploaded_image').html(data);
+	            				$('#uploaded_images').html(data);
+	            				$('#files').val('');
 	            			},
-	            			error: function() {
+	            			error: function() {s
 	            				console.log('bye');
 	            			}
 	            		});
+	            	} else {
+	            		alert(error);
 	            	}
+
 	            });
+
 	        });
 	    </script>
   	</body>
